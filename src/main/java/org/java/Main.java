@@ -128,8 +128,6 @@ public class Main
             }
         });
 
-
-
         MongoSpark.save(MongoRDD);
     }
 }
