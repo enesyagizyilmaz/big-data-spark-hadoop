@@ -1,6 +1,9 @@
 package org.java;
 
 import com.google.common.collect.Iterators;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.spark.MongoSpark;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -31,9 +34,13 @@ public class Main
         JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
         JavaRDD<String> Raw_Data = sc.textFile("src/main/resources/WorldCupPlayers.csv");
 
-        //Line Number
+        //Line Number - saving the MongoDB
         System.out.println("Line Number: " + Raw_Data.count());
-
+        MongoClient mongoClient = new MongoClient("localhost", 27017);
+        MongoDatabase database = mongoClient.getDatabase("test");
+        MongoCollection<Document> collection = database.getCollection("LineNumber");
+        Document doc = new Document("lineCount", Raw_Data.count());
+        collection.insertOne(doc);
 
         JavaRDD<Player> playersRDD = Raw_Data.map(new Function<String, Player>()
         {
