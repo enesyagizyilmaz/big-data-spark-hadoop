@@ -34,6 +34,7 @@ public class Main
         //Line Number
         System.out.println("Line Number: " + Raw_Data.count());
 
+
         JavaRDD<Player> playersRDD = Raw_Data.map(new Function<String, Player>()
         {
             @Override
@@ -60,7 +61,7 @@ public class Main
             @Override
             public void call(Player player) throws Exception
             {
-                System.out.println(player.getPlayerName());
+                //System.out.println(player.getPlayerName());
             }
         });
 
@@ -118,10 +119,11 @@ public class Main
             }
         });
 
-        JavaRDD<Document> MongoRDD = resultRDD.map(new Function<PlayerDTO, Document>() {
+        JavaRDD<Document> MongoRDD = resultRDD.map(new Function<PlayerDTO, Document>()
+        {
             @Override
-            public Document call(PlayerDTO playerDTO) throws Exception {
-                // Document nesnesi kullanarak JSON oluşturma
+            public Document call(PlayerDTO playerDTO) throws Exception
+            {
                 Document doc = new Document("PlayerName", playerDTO.getPlayerName())
                         .append("MatchCount", playerDTO.getMatchCount());
                 return doc;
